@@ -1,0 +1,15 @@
+{
+  "name": "campus-housing-platform",
+  "version": "1.0.0",
+  "description": "Campus Housing Platform monorepo",
+  "scripts": {
+    "install:all": "npm install --prefix server && npm install --prefix client",
+    "start:server": "npm start --prefix server",
+    "start:client": "npm run dev --prefix client",
+    "dev": "npx concurrently \"npm run start:server\" \"npm run start:client\"",
+    "build:client": "npm run build --prefix client"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
