@@ -2,6 +2,8 @@ from rest_framework import generics, status
 from rest_framework.response import Response
 from .serializers import UserSerializer, VerifyEmailSerializer, LoginSerializer, EmptySerializer
 from .models import CustomUser
+from django.core.mail import send_mail
+from django.conf import settings
 from django.contrib.auth import authenticate    
 
 
@@ -14,6 +16,15 @@ class RegisterView(generics.CreateAPIView):
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
 
+    
+        # Send verification email
+        send_mail(
+            subject="Verify your email",
+            message=f"Your verification code is {user.verification_code}.",
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[user.email],
+        )
+    
         return Response({"message": "User registered successfully. Please check your email to verify your account."}, status=status.HTTP_201_CREATED)
     
 

@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from .models import CustomUser
-import uuid
 
 class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, required=True, style={'input_type': 'password'})
@@ -19,12 +18,12 @@ class UserSerializer(serializers.ModelSerializer):
         user = CustomUser.objects.create(
             username=validated_data['username'],
             email=validated_data['email'],
-            role=validated_data['role']
+            role=validated_data['role'],
+
         )
         user.set_password(validated_data['password'])
         user.is_active = False  # User must verify email before activating
         user.email_verified = False
-        user.verification_code = uuid.uuid4()  # Generate a unique verification code
         user.save()
         return user
 
