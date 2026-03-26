@@ -1,7 +1,7 @@
-from rest_framework import generics, status
+from rest_framework import generics, status, permissions
 from rest_framework.response import Response
-from .serializers import UserSerializer, VerifyEmailSerializer, LoginSerializer, EmptySerializer
-from .models import CustomUser
+from .serializers import ProfileSerializer, ProfileSerializer, UserSerializer, VerifyEmailSerializer, LoginSerializer, EmptySerializer
+from .models import CustomUser, Profile
 from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib.auth import authenticate    
@@ -69,3 +69,12 @@ class LogoutView(generics.CreateAPIView):
 
     def post(self, request, *args, **kwargs):
         return Response({"message": "Logout successful."}, status=status.HTTP_200_OK)
+    
+
+class UpdateProfileView(generics.RetrieveUpdateAPIView):
+    serializer_class = ProfileSerializer
+    queryset = Profile.objects.all()
+    permission_classes = [permissions.IsAuthenticated] 
+
+    def get_object(self):
+        return self.request.user.profile
