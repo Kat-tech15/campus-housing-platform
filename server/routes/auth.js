@@ -17,8 +17,8 @@ router.post('/register', async (req, res) => {
     return res.status(400).json({ error: 'Role must be landlord or student' });
   }
 
-  if (password.length < 6) {
-    return res.status(400).json({ error: 'Password must be at least 6 characters' });
+  if (password.length < 8) {
+    return res.status(400).json({ error: 'Password must be at least 8 characters' });
   }
 
   const existingUser = db.prepare('SELECT id FROM users WHERE email = ?').get(email);

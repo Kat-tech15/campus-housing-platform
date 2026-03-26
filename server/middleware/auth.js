@@ -5,6 +5,10 @@ if (!JWT_SECRET) {
   console.error('FATAL: JWT_SECRET environment variable is not set');
   process.exit(1);
 }
+if (JWT_SECRET.length < 32) {
+  console.error('FATAL: JWT_SECRET must be at least 32 characters for cryptographic strength');
+  process.exit(1);
+}
 
 function authenticateToken(req, res, next) {
   const authHeader = req.headers['authorization'];

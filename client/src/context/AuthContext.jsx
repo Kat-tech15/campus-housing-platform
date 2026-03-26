@@ -2,6 +2,15 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const AuthContext = createContext(null);
 
+function isTokenExpired(token) {
+  try {
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    return payload.exp * 1000 < Date.now();
+  } catch {
+    return true;
+  }
+}
+
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
@@ -11,12 +20,17 @@ export function AuthProvider({ children }) {
     const storedToken = localStorage.getItem('token');
     const storedUser = localStorage.getItem('user');
     if (storedToken && storedUser) {
-      try {
-        setToken(storedToken);
-        setUser(JSON.parse(storedUser));
-      } catch {
+      if (isTokenExpired(storedToken)) {
         localStorage.removeItem('token');
         localStorage.removeItem('user');
+      } else {
+        try {
+          setToken(storedToken);
+          setUser(JSON.parse(storedUser));
+        } catch {
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
+        }
       }
     }
     setLoading(false);

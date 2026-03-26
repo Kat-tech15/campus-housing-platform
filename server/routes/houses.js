@@ -98,7 +98,7 @@ router.post('/', authenticateToken, requireLandlord, (req, res) => {
 
   const priceNum = parseFloat(price);
   if (isNaN(priceNum) || priceNum < 0) {
-    return res.status(400).json({ error: 'Price must be a positive number' });
+    return res.status(400).json({ error: 'Price must be a non-negative number' });
   }
 
   try {

@@ -21,8 +21,8 @@ export default function Register() {
       setError('Please fill in all fields');
       return;
     }
-    if (form.password.length < 6) {
-      setError('Password must be at least 6 characters');
+    if (form.password.length < 8) {
+      setError('Password must be at least 8 characters');
       return;
     }
     setLoading(true);
@@ -79,7 +79,7 @@ export default function Register() {
               id="password"
               type="password"
               name="password"
-              placeholder="Min. 6 characters"
+              placeholder="Min. 8 characters"
               value={form.password}
               onChange={handleChange}
               className="form-input"

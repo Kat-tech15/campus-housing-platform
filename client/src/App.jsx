@@ -1,5 +1,5 @@
-import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { BrowserRouter, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import Home from './pages/Home';
 import Login from './pages/Login';
@@ -17,10 +17,25 @@ function ProtectedRoute({ children, requireRole }) {
   return children;
 }
 
+function SessionExpiredHandler() {
+  const { logout } = useAuth();
+  const navigate = useNavigate();
+  useEffect(() => {
+    function handleExpired() {
+      logout();
+      navigate('/login', { state: { message: 'Your session has expired. Please log in again.' } });
+    }
+    window.addEventListener('auth:session-expired', handleExpired);
+    return () => window.removeEventListener('auth:session-expired', handleExpired);
+  }, [logout, navigate]);
+  return null;
+}
+
 export default function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
+        <SessionExpiredHandler />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />

@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import api from '../api/axios';
 
 export default function Login() {
   const { login } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const [form, setForm] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+
+  const sessionMessage = location.state?.message;
 
   function handleChange(e) {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -40,6 +43,7 @@ export default function Login() {
         <h2>Welcome back</h2>
         <p className="auth-subtitle">Sign in to your account</p>
 
+        {sessionMessage && <div className="alert alert-warning">{sessionMessage}</div>}
         {error && <div className="alert alert-error">{error}</div>}
 
         <form onSubmit={handleSubmit} className="form">
