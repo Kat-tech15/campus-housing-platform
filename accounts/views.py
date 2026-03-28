@@ -19,7 +19,6 @@ class RegisterView(generics.CreateAPIView):
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
 
-    
         # Send verification email
         send_mail(
             subject="Verify your email",
@@ -57,6 +56,7 @@ class LoginView(generics.CreateAPIView):
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
+        
         username = serializer.validated_data['username']
         password = serializer.validated_data['password']
 

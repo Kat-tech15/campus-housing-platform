@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'drf_spectacular',
     'accounts',
     'houses',
+    'bookings',
 ]
 
 MIDDLEWARE = [
