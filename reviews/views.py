@@ -5,4 +5,5 @@ from .models import Review
 class ReviewCreateView(generics.CreateAPIView):
     serializer_class = ReviewSerializer
     queryset  = Review.objects.all()
+    permission_Classes = [permissions.AllowAny]
     
