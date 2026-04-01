@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'drf_spectacular',
-    'accounts',
+    'accounts.apps.AccountsConfig',
     'houses',
     'bookings',
     'reviews',

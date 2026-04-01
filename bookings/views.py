@@ -16,7 +16,7 @@ class BookingListCreateView(mixins.CreateModelMixin,mixins.ListModelMixin, gener
         return self.list(request, *args, **kwargs)
 
 
-@extend_schema(tags=['Booking'])   
+@extend_schema(tags=['Bookings'])   
 class BookingDetailView(mixins.RetrieveModelMixin,
                       mixins.UpdateModelMixin,
                       mixins.DestroyModelMixin,

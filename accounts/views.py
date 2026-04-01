@@ -2,6 +2,7 @@ from rest_framework import generics, status, permissions
 from rest_framework.response import Response
 from .serializers import ProfileSerializer, ProfileSerializer, UserSerializer, VerifyEmailSerializer, LoginSerializer, EmptySerializer
 from .models import CustomUser, Profile
+from rest_framework_simplejwt.tokens import RefreshToken
 from django.core.mail import send_mail
 from drf_spectacular.utils import extend_schema
 from django.conf import settings
@@ -61,10 +62,15 @@ class LoginView(generics.CreateAPIView):
         password = serializer.validated_data['password']
 
         user = authenticate(request, username=username, password=password)
+        name = user.username
 
         if user is not None:
+            refresh = RefreshToken.for_user(user)
             if user.email_verified:
-                return Response({"message": "Login successful."}, status=status.HTTP_200_OK)
+                return Response({"message": "Login successful.",
+                "refresh": str(refresh),
+                "access": str(refresh.access_token)},
+                  status=status.HTTP_200_OK)
             else:
                 return Response({"error": "Email not verified. Please verify your email before logging in."}, status=status.HTTP_400_BAD_REQUEST)
         else:
